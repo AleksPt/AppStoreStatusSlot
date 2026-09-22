@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Концепт 1 — Неоновый Вегас</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Monoton&family=Press+Start+2P&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff4fb0; --pink-glow: #ff2d9a;
+    --cyan: #4ff3ff; --cyan-glow: #00d5ff;
+    --green: #5dffae; --amber: #ffb43b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 390px; height: 844px; margin: 0; overflow: hidden;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 38%, rgba(160, 60, 255, .35), transparent 70%),
+      linear-gradient(180deg, #0c0622 0%, #150a33 62%, #07030f 62.2%, #0d0620 100%);
+    font-family: "Comfortaa", sans-serif;
+  }
+  /* кирпичная стена, еле заметная */
+  body::before {
+    content: ""; position: fixed; inset: 0 0 38% 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0 1px, transparent 1px 58px);
+    -webkit-mask: linear-gradient(180deg, transparent, #000 30%, #000 80%, transparent);
+  }
+  .stage { position: relative; width: 350px; padding-right: 50px; }
+  .machine { position: relative; width: 300px; }
+
+  .neon-pink { border: 3px solid #ffd1ea; box-shadow: 0 0 4px var(--pink), 0 0 14px var(--pink-glow), 0 0 30px var(--pink-glow), inset 0 0 10px var(--pink-glow); }
+  .neon-cyan { border: 3px solid #d9fcff; box-shadow: 0 0 4px var(--cyan), 0 0 14px var(--cyan-glow), 0 0 28px var(--cyan-glow), inset 0 0 10px var(--cyan-glow); }
+
+  .sign {
+    position: relative;
+    padding: 34px 16px 20px;
+    border-radius: 150px 150px 18px 18px / 110px 110px 18px 18px;
+    background: radial-gradient(ellipse at 50% 70%, #2a0f55, #140631 75%);
+    text-align: center;
+  }
+  .kicker {
+    font-size: 15px; letter-spacing: .5em; padding-left: .5em;
+    color: #e6fdff;
+    text-shadow: 0 0 4px var(--cyan), 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow);
+  }
+  .title {
+    margin: 8px 0 0;
+    font-family: "Monoton", cursive; font-weight: 400;
+    font-size: 40px; line-height: 1.1;
+    color: #ffe3f3;
+    text-shadow: 0 0 3px #fff, 0 0 10px var(--pink), 0 0 22px var(--pink-glow), 0 0 44px var(--pink-glow);
+  }
+  .sparks { position: absolute; inset: 0; pointer-events: none; }
+  .sparks i {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    background: #fff6c8; box-shadow: 0 0 6px 2px var(--amber);
+  }
+
+  .cabinet {
+    position: relative; margin-top: 12px; padding: 16px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #24104c, #12072b);
+  }
+  .window {
+    position: relative; height: 190px; overflow: hidden;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #05020d, #120827 50%, #05020d);
+    box-shadow: inset 0 0 0 2px #000, inset 0 0 30px rgba(0,0,0,.9);
+  }
+  .window::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(5,2,13,.95) 0%, transparent 30%, transparent 70%, rgba(5,2,13,.95) 100%),
+      linear-gradient(115deg, transparent 55%, rgba(255,255,255,.08) 55% 62%, transparent 62%);
+  }
+  .row { height: 95px; display: grid; place-items: center; font-family: "Russo One", sans-serif; font-size: 27px; text-transform: uppercase; white-space: nowrap; }
+  .strip { position: absolute; left: 0; right: 0; top: -47px; }
+  .row.no  { color: #ffd1ea; font-size: 22px; text-shadow: 0 0 6px var(--pink), 0 0 16px var(--pink-glow); opacity: .75; }
+  .row.yes { color: #eafff4; text-shadow: 0 0 4px #fff, 0 0 10px var(--green), 0 0 24px #1dff8a, 0 0 44px #1dff8a; }
+  .payline { position: absolute; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: #fff; z-index: 2; box-shadow: 0 0 6px 2px var(--cyan); }
+  .payline.l { left: 6px; } .payline.r { right: 6px; }
+
+  .plate {
+    margin-top: 12px; padding: 16px 10px;
+    border-radius: 12px;
+    background:
+      radial-gradient(circle, rgba(255,180,59,.10) 1px, transparent 1.5px) 0 0 / 5px 5px,
+      #0a0514;
+    box-shadow: inset 0 0 0 2px #2c1650, inset 0 0 20px #000;
+    text-align: center;
+    font-family: "Press Start 2P", monospace; font-size: 13px; line-height: 1.5;
+    color: #ffe0a8;
+    text-shadow: 0 0 4px var(--amber), 0 0 12px #ff8a00;
+  }
+  .base {
+    height: 22px; margin: 12px -6px 0; border-radius: 8px;
+    background: linear-gradient(180deg, #1d0d3d, #0b0418);
+    box-shadow: 0 3px 0 var(--pink), 0 6px 22px 2px var(--pink-glow);
+  }
+  .reflection {
+    position: absolute; left: -10%; right: 10%; bottom: -70px; height: 70px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,45,154,.45), transparent 70%);
+    filter: blur(4px);
+  }
+
+  .lever { position: absolute; left: calc(100% + 2px); top: 50%; width: 50px; height: 0; }
+  .lever .mount { position: absolute; left: -2px; top: -36px; width: 18px; height: 72px; border-radius: 0 10px 10px 0; background: linear-gradient(90deg, #3a3a48, #c9c9d6 45%, #5a5a68); }
+  .lever .rod { position: absolute; left: 19px; bottom: 0; width: 8px; height: 106px; border-radius: 4px; background: linear-gradient(90deg, #6d6d7a, #fff 40%, #9d9dab 70%, #4a4a56); }
+  .lever .hub { position: absolute; left: 7px; top: -16px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #9d9dab 50%, #3a3a48); }
+  .lever .ball {
+    position: absolute; left: 23px; top: -106px; width: 44px; height: 44px; margin: -22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff 0%, #ff9ad3 20%, var(--pink) 55%, #a1005a 100%);
+    box-shadow: 0 0 10px var(--pink), 0 0 30px var(--pink-glow);
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="machine">
+      <header class="sign neon-pink">
+        <div class="sparks">
+          <i style="left:24px; top:70px"></i><i style="left:56px; top:36px"></i><i style="left:100px; top:16px"></i>
+          <i style="right:24px; top:70px"></i><i style="right:56px; top:36px"></i><i style="right:100px; top:16px"></i>
+          <i style="left:146px; top:9px"></i>
+        </div>
+        <div class="kicker">СТАТУС</div>
+        <h1 class="title">AppStore</h1>
+      </header>
+
+      <section class="cabinet neon-cyan">
+        <div class="window">
+          <span class="payline l"></span><span class="payline r"></span>
+          <div class="strip">
+            <div class="row no">Не отпустило</div>
+            <div class="row yes">Отпустило</div>
+            <div class="row no">Не отпустило</div>
+          </div>
+        </div>
+        <div class="lever"><div class="mount"></div><div class="rod"></div><div class="hub"></div><div class="ball"></div></div>
+      </section>
+
+      <div class="plate">ГРУЗИМ ПРИЛЫ!</div>
+      <div class="base"></div>
+      <div class="reflection"></div>
+    </div>
+  </div>
+</body>
+</html>

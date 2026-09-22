@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Концепт 6: зелёное сукно</title>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@500;700;800&family=Unbounded:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+  /* Палитра: зелёное сукно + слоновая кость + чёрный лак, единственный акцент — красный как на рулетке. Металл — хром, не золото. */
+  :root {
+    --felt: #145a43;
+    --felt-deep: #0b3a2b;
+    --felt-dark: #06241b;
+    --ivory: #ece6d6;
+    --ivory-shade: #cfc6b0;
+    --lacquer: #121614;
+    --lacquer-hi: #2a302d;
+    --red: #d23a2c;
+    --red-deep: #7e1a12;
+    --chrome: linear-gradient(180deg, #fafbfb 0%, #b7bcbf 42%, #e9ecee 56%, #7d8387 100%);
+    --chrome-h: linear-gradient(90deg, #6f757a 0%, #f2f4f5 38%, #aab0b4 66%, #54595d 100%);
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 390px; height: 844px; margin: 0; overflow: hidden; position: relative;
+    display: grid; place-items: center;
+    font-family: "Onest", sans-serif;
+    background:
+      radial-gradient(ellipse 70% 42% at 50% 42%, #1f7a5b 0%, var(--felt) 38%, var(--felt-deep) 72%, var(--felt-dark) 100%);
+  }
+  /* ворс сукна */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 20;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0.08  0 0 0 0 0.04  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .45; mix-blend-mode: multiply;
+  }
+  /* напечатанная на сукне дуга стола */
+  .print {
+    position: absolute; left: 50%; top: 610px; width: 620px; height: 400px; margin-left: -310px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(236, 230, 214, .22);
+    box-shadow: 0 0 0 14px transparent, 0 0 0 15.5px rgba(236, 230, 214, .14);
+  }
+  /* кожаный бортик стола */
+  .rail {
+    position: absolute; left: -60px; right: -60px; bottom: -330px; height: 420px;
+    border-radius: 50%;
+    border: 34px solid #1a1411;
+    box-shadow: inset 0 8px 0 rgba(255,255,255,.06), 0 -6px 18px rgba(0,0,0,.45);
+  }
+
+  /* фишки: стопка рёбер и верхняя фишка с пятнами по краю */
+  .chips { position: absolute; z-index: 3; width: 56px; }
+  .chip {
+    position: absolute; left: 0; width: 56px; height: 12px; border-radius: 0 0 50% 50% / 0 0 6px 6px;
+    background: repeating-linear-gradient(90deg, var(--c) 0 9px, var(--ivory) 9px 13px);
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,.3), inset 0 1px 0 rgba(0,0,0,.25);
+  }
+  .chip.top {
+    width: 56px; height: 20px; margin-bottom: 2px; border-radius: 50%;
+    background: radial-gradient(ellipse, var(--c) 0 38%, var(--ivory) 38% 46%, var(--c) 46%);
+    border: 3px dashed var(--ivory);
+    outline: 2px solid var(--c); outline-offset: -2px;
+    box-shadow: none;
+  }
+
+  .stage { position: relative; width: 350px; padding-right: 50px; z-index: 2; margin-top: -30px; }
+  .machine { position: relative; width: 300px; filter: drop-shadow(0 26px 22px rgba(0, 20, 12, .6)); }
+
+  /* арка: обод как у рулетки — красные и чёрные карманы через тонкую кость */
+  .crown {
+    position: relative; height: 150px; padding: 18px 18px 0;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background:
+      repeating-conic-gradient(from -90deg at 50% 100%,
+        var(--red) 0deg 8.2deg, var(--ivory) 8.2deg 9deg,
+        var(--lacquer) 9deg 17.2deg, var(--ivory) 17.2deg 18deg);
+    box-shadow: inset 0 0 0 3px #c9ccce, inset 0 0 0 5px var(--lacquer);
+  }
+  .crown::before {
+    /* хромированный кант по внешнему краю */
+    content: ""; position: absolute; inset: -5px -5px 0;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: var(--chrome); z-index: -1;
+  }
+  .crown-inner {
+    height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 14px;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    background: radial-gradient(ellipse 80% 90% at 50% 100%, #2b8566 0%, var(--felt) 45%, var(--felt-deep) 100%);
+    box-shadow: inset 0 0 0 3px #c9ccce, inset 0 10px 20px rgba(0,0,0,.45);
+  }
+  .kicker { font-weight: 700; font-size: 12px; letter-spacing: .36em; padding-left: .36em; color: var(--ivory); opacity: .8; }
+  .title { margin: 6px 0 0; font-family: "Unbounded", sans-serif; font-weight: 900; font-size: 34px; letter-spacing: -.02em; line-height: 1; color: var(--ivory); text-shadow: 0 3px 0 rgba(0,0,0,.35); }
+
+  .body {
+    position: relative; padding: 16px 16px 18px;
+    background: linear-gradient(90deg, #070908 0%, var(--lacquer-hi) 18%, #3a413d 40%, var(--lacquer) 70%, #050605 100%);
+    box-shadow: inset 0 0 0 3px #c9ccce, inset 0 0 0 5px #0a0c0b, inset 0 14px 14px -8px rgba(0,0,0,.6);
+  }
+  .window-frame { padding: 7px; border-radius: 14px; background: var(--chrome); box-shadow: 0 6px 10px rgba(0,0,0,.5); }
+  .window {
+    position: relative; height: 184px; overflow: hidden; border-radius: 8px;
+    background: linear-gradient(180deg, #6f6a5d 0%, var(--ivory-shade) 16%, var(--ivory) 36%, #f6f2e8 50%, var(--ivory) 64%, var(--ivory-shade) 84%, #6f6a5d 100%);
+    box-shadow: inset 0 0 0 2px var(--lacquer);
+  }
+  .window::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,12,10,.7) 0%, transparent 28%, transparent 72%, rgba(10,12,10,.7) 100%),
+      linear-gradient(112deg, transparent 62%, rgba(255,255,255,.4) 62% 66%, transparent 66%);
+    box-shadow: inset 0 14px 12px -8px rgba(0,0,0,.55);
+  }
+  /* метки линии выигрыша — маленькие ромбы, как маркер рулетки */
+  .marker { position: absolute; top: 50%; width: 12px; height: 12px; margin-top: -6px; background: var(--red); transform: rotate(45deg); z-index: 2; box-shadow: 0 0 0 2px var(--ivory); }
+  .marker.l { left: -3px; } .marker.r { right: -3px; }
+  .strip { position: absolute; left: 0; right: 0; top: -46px; }
+  .row { height: 92px; display: grid; place-items: center; font-family: "Unbounded", sans-serif; font-weight: 800; text-transform: uppercase; white-space: nowrap; letter-spacing: -.01em; }
+  .row.yes { font-size: 27px; color: var(--red); text-shadow: 0 2px 0 var(--red-deep); }
+  .row.no  { font-size: 22px; color: var(--lacquer); }
+
+  /* табличка как настольный плакат лимитов у крупье */
+  .placard {
+    margin-top: 14px; padding: 5px; border-radius: 10px; background: var(--chrome);
+    box-shadow: 0 4px 8px rgba(0,0,0,.45);
+  }
+  .placard div {
+    display: grid; place-items: center; min-height: 58px; border-radius: 6px;
+    background: var(--ivory);
+    box-shadow: inset 0 0 0 2px var(--ivory), inset 0 0 0 3px var(--felt-deep);
+    font-family: "Unbounded", sans-serif; font-weight: 800; font-size: 19px; letter-spacing: -.01em; text-transform: uppercase;
+    color: var(--felt-deep);
+  }
+
+  .base { height: 26px; margin: 0 -12px; border-radius: 0 0 8px 8px; background: linear-gradient(180deg, #c9ccce 0 3px, var(--lacquer) 3px, #030403); box-shadow: 0 8px 14px rgba(0,0,0,.45); }
+
+  .lever { position: absolute; left: calc(100% - 2px); top: 50%; width: 50px; height: 0; }
+  .lever .mount { position: absolute; left: 0; top: -40px; width: 20px; height: 80px; border-radius: 0 10px 10px 0; background: var(--chrome-h); box-shadow: 3px 4px 8px rgba(0,0,0,.45); }
+  .lever .rod { position: absolute; left: 20px; bottom: 0; width: 8px; height: 108px; border-radius: 4px; background: var(--chrome-h); }
+  .lever .hub { position: absolute; left: 8px; top: -16px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #aab0b4 50%, #3e4245); box-shadow: 0 3px 6px rgba(0,0,0,.5); }
+  .lever .ball { position: absolute; left: 24px; top: -108px; width: 46px; height: 46px; margin: -23px; border-radius: 50%; background: radial-gradient(circle at 34% 28%, #fff 0%, #f07466 14%, var(--red) 48%, #5e120c 100%); box-shadow: 0 6px 12px rgba(0,0,0,.5); }
+</style>
+</head>
+<body>
+  <div class="print"></div>
+  <div class="rail"></div>
+
+  <div class="chips" style="left:22px; bottom:118px">
+    <i class="chip" style="--c:#d23a2c; bottom:0"></i><i class="chip" style="--c:#d23a2c; bottom:10px"></i><i class="chip" style="--c:#121614; bottom:20px"></i><i class="chip" style="--c:#d23a2c; bottom:30px"></i>
+    <i class="chip top" style="--c:#d23a2c; bottom:32px"></i>
+  </div>
+  <div class="chips" style="right:40px; bottom:128px">
+    <i class="chip" style="--c:#121614; bottom:0"></i><i class="chip" style="--c:#121614; bottom:10px"></i>
+    <i class="chip top" style="--c:#121614; bottom:12px"></i>
+  </div>
+
+  <div class="stage">
+    <div class="machine">
+      <header class="crown">
+        <div class="crown-inner">
+          <div class="kicker">СТАТУС</div>
+          <h1 class="title">AppStore</h1>
+        </div>
+      </header>
+
+      <section class="body">
+        <div class="window-frame">
+          <div class="window">
+            <span class="marker l"></span><span class="marker r"></span>
+            <div class="strip">
+              <div class="row no">Не отпустило</div>
+              <div class="row yes">Отпустило</div>
+              <div class="row no">Не отпустило</div>
+            </div>
+          </div>
+        </div>
+        <div class="placard"><div>Грузим прилы!</div></div>
+        <div class="lever"><div class="mount"></div><div class="rod"></div><div class="hub"></div><div class="ball"></div></div>
+      </section>
+      <div class="base"></div>
+    </div>
+  </div>
+</body>
+</html>

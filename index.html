@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#1a0710">
+  <title>Статус AppStore</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <main class="stage">
+    <div class="machine" id="machine">
+      <div class="body">
+        <header class="marquee">
+          <div class="marquee-panel">
+            <div class="bulbs" id="bulbs" aria-hidden="true"></div>
+            <h1 class="title">
+              <span class="title-kicker">Статус</span>
+              <span class="title-main">AppStore</span>
+            </h1>
+          </div>
+        </header>
+
+        <section class="cabinet">
+          <div class="bezel">
+            <span class="payline payline--l" aria-hidden="true"></span>
+            <span class="payline payline--r" aria-hidden="true"></span>
+            <div class="window" id="window">
+              <div class="strip" id="strip" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <div class="lever is-hint" id="lever">
+            <div class="lever-mount"></div>
+            <div class="lever-rod"></div>
+            <div class="lever-hub"></div>
+            <button class="lever-ball" id="leverBall" type="button" aria-label="Дёрнуть ручку"></button>
+          </div>
+        </section>
+
+        <div class="plate">
+          <div class="plate-inner" id="status" role="status" aria-live="polite">Дёрни за ручку</div>
+        </div>
+      </div>
+    </div>
+    <div class="fx" id="fx" aria-hidden="true"></div>
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

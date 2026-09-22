@@ -1,0 +1,356 @@
+:root {
+  --bg-0: #070204;
+  --bg-1: #1a0710;
+  --bg-2: #43101f;
+
+  --gold-grad: linear-gradient(180deg, #fff4bd 0%, #f1c95f 20%, #b98424 48%, #f5d67a 66%, #8a5a12 100%);
+  --gold-grad-h: linear-gradient(90deg, #7a4d0e 0%, #f1c95f 22%, #fff4bd 40%, #b98424 68%, #f5d67a 86%, #6d440c 100%);
+  --lacquer: linear-gradient(180deg, #38383e 0%, #121215 34%, #060607 70%, #1c1c20 100%);
+
+  --cream: #fff8ea;
+  --red: #d9161c;
+  --red-deep: #5a0a0d;
+  --outline: #ffcf3f;
+  --win: #ffd23f;
+
+  --machine-w: min(320px, calc(100vw - 32px - 46px));
+  --reel-h: 200px;
+  --item-h: 96px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+
+body {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  font-family: "Manrope", system-ui, sans-serif;
+  color: var(--cream);
+  background:
+    radial-gradient(120% 70% at 50% 18%, rgba(255, 190, 90, .16) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 40%, var(--bg-2) 0%, var(--bg-1) 52%, var(--bg-0) 100%);
+  background-color: var(--bg-0);
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* мягкие «прожекторные» лучи за автоматом */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20% -40% 30%;
+  background: repeating-conic-gradient(from 0deg at 50% 0%, rgba(255, 210, 120, .06) 0 6deg, transparent 6deg 16deg);
+  -webkit-mask: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+          mask: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.stage {
+  position: relative;
+  width: calc(var(--machine-w) + 46px);
+  padding-right: 46px;
+}
+
+/* ───────── корпус ───────── */
+.machine {
+  position: relative;
+  width: var(--machine-w);
+  padding: 10px;
+  border-radius: 34px 34px 22px 22px;
+  background: var(--gold-grad);
+  box-shadow:
+    0 40px 60px -20px rgba(0, 0, 0, .8),
+    0 0 0 1px rgba(0, 0, 0, .6),
+    0 0 80px rgba(255, 180, 60, .12);
+}
+.machine.is-lose { animation: shake .45s cubic-bezier(.36, .07, .19, .97); }
+
+.body {
+  position: relative;
+  border-radius: 26px 26px 14px 14px;
+  background: var(--lacquer);
+  padding: 12px 12px 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), inset 0 -2px 6px rgba(0, 0, 0, .8);
+}
+/* глянцевый блик на лаке */
+.body::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 50%;
+  border-radius: 26px 26px 0 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .06), transparent);
+  pointer-events: none;
+}
+
+/* ───────── табло с заголовком ───────── */
+.marquee {
+  position: relative;
+  border-radius: 18px;
+  padding: 3px;
+  background: var(--gold-grad);
+}
+.marquee-panel {
+  position: relative;
+  border-radius: 15px;
+  padding: 22px 16px 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(255, 60, 60, .35), transparent 60%),
+    linear-gradient(180deg, #2a0409 0%, #12020a 100%);
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, .9);
+  overflow: hidden;
+}
+.bulbs { position: absolute; inset: 8px; pointer-events: none; }
+.bulbs i {
+  position: absolute;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #5e3c10;
+  animation: chase 1.2s linear infinite;
+  animation-delay: calc(var(--i) * -.4s);
+}
+.machine.is-spinning .bulbs i { animation-duration: .6s; }
+.machine.is-win .bulbs i { animation-duration: .3s; }
+.machine.is-lose .bulbs i { animation-name: chase-red; animation-duration: 1.6s; }
+
+@keyframes chase {
+  0%, 33%   { background: #fff3c4; box-shadow: 0 0 6px 2px rgba(255, 200, 80, .9); }
+  34%, 100% { background: #5e3c10; box-shadow: none; }
+}
+@keyframes chase-red {
+  0%, 33%   { background: #ffb3b3; box-shadow: 0 0 6px 2px rgba(255, 50, 50, .85); }
+  34%, 100% { background: #4a0d0d; box-shadow: none; }
+}
+
+.title { margin: 0; line-height: 1; font-weight: 400; }
+.title-kicker {
+  display: block;
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .42em;
+  text-transform: uppercase;
+  color: #ffd9a0;
+  opacity: .85;
+  margin-bottom: 8px;
+  padding-left: .42em;
+}
+.title-main {
+  display: block;
+  font-family: "Russo One", sans-serif;
+  font-size: clamp(30px, 10.5vw, 40px);
+  letter-spacing: .01em;
+  background: linear-gradient(180deg, #fffbe0 0%, #ffe07a 45%, #e0a21f 55%, #ffe9a3 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 0 #5a2a00) drop-shadow(0 0 14px rgba(255, 190, 60, .55));
+}
+.machine.is-win .title-main { animation: flash .3s steps(2) 6; }
+@keyframes flash { 50% { filter: drop-shadow(0 2px 0 #5a2a00) drop-shadow(0 0 26px rgba(255, 230, 120, 1)); } }
+
+/* ───────── окно барабана ───────── */
+.cabinet { position: relative; margin-top: 14px; }
+
+.bezel {
+  position: relative;
+  padding: 7px;
+  border-radius: 16px;
+  background: var(--gold-grad);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .6);
+}
+.window {
+  position: relative;
+  height: var(--reel-h);
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #5b4a36 0%, #d8cab0 16%, var(--cream) 40%, var(--cream) 60%, #d8cab0 84%, #5b4a36 100%);
+  box-shadow: inset 0 0 0 2px #1a1208;
+}
+/* объём цилиндра и стекло поверх ленты */
+.window::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(20, 10, 0, .75) 0%, rgba(20, 10, 0, 0) 30%, rgba(20, 10, 0, 0) 70%, rgba(20, 10, 0, .75) 100%),
+    linear-gradient(180deg, transparent 8%, rgba(255, 255, 255, .55) 9%, rgba(255, 255, 255, 0) 16%);
+  pointer-events: none;
+}
+.machine.is-win .window { box-shadow: inset 0 0 0 2px #1a1208, inset 0 0 30px rgba(255, 200, 40, .9); }
+
+.strip {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  will-change: transform;
+  transition: filter .35s ease-out;
+}
+.strip.is-blurred { filter: blur(2.2px); }
+
+.item {
+  height: var(--item-h);
+  display: grid;
+  place-items: center;
+  border-bottom: 1px dashed rgba(90, 60, 20, .25);
+  font-family: "Russo One", sans-serif;
+  font-size: clamp(22px, 7.4vw, 27px);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* «ОТПУСТИЛО» — как красная семёрка: красная заливка, жёлтый контур, тёмная тень */
+.item--yes span {
+  color: var(--red);
+  text-shadow:
+    2px 0 var(--outline), -2px 0 var(--outline), 0 2px var(--outline), 0 -2px var(--outline),
+    1.5px 1.5px var(--outline), -1.5px -1.5px var(--outline), 1.5px -1.5px var(--outline), -1.5px 1.5px var(--outline),
+    0 4px 0 var(--red-deep), 0 7px 10px rgba(0, 0, 0, .35);
+}
+/* «НЕ ОТПУСТИЛО» — как плашка BAR: белые буквы на чёрной ленте */
+.item--no span {
+  position: relative;
+  padding: 6px 12px 5px;
+  font-size: .82em;
+  color: #fff;
+  background: #111;
+  border-radius: 4px;
+  letter-spacing: .03em;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #111, 0 6px 10px rgba(0, 0, 0, .35);
+}
+
+/* указатели линии выигрыша */
+.payline {
+  position: absolute;
+  top: 50%;
+  width: 0; height: 0;
+  border: 9px solid transparent;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .6));
+  z-index: 2;
+}
+.payline--l { left: -2px; border-left: 12px solid var(--red); }
+.payline--r { right: -2px; border-right: 12px solid var(--red); }
+
+/* ───────── ручка ───────── */
+.lever {
+  --L: 108px;
+  position: absolute;
+  left: calc(100% + 10px);  /* внешняя граница корпуса */
+  top: 50%;
+  width: 46px;
+  height: 0;
+  z-index: 3;
+}
+.lever-mount {
+  position: absolute;
+  left: -2px; top: -40px;
+  width: 20px; height: 80px;
+  border-radius: 0 12px 12px 0;
+  background: var(--gold-grad);
+  box-shadow: inset -2px 0 4px rgba(0, 0, 0, .35), 3px 4px 8px rgba(0, 0, 0, .5);
+}
+.lever-rod {
+  position: absolute;
+  left: 20px; bottom: 0;
+  width: 8px;
+  height: var(--L);
+  border-radius: 4px;
+  background: var(--gold-grad-h);
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--cos, 1));
+  box-shadow: 2px 0 4px rgba(0, 0, 0, .4);
+}
+.lever-hub {
+  position: absolute;
+  left: 8px; top: -16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff4bd 0%, #e2b04a 40%, #6d440c 100%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, .6);
+}
+.lever-ball {
+  position: absolute;
+  left: 24px; top: 0;
+  width: 44px; height: 44px;
+  margin: 0; padding: 0; border: 0;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  background: radial-gradient(circle at 34% 28%, #fff 0%, #ff8a80 10%, #e3141b 38%, #8e0006 78%, #4a0003 100%);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .55), inset -3px -4px 8px rgba(0, 0, 0, .35);
+  transform: translate(-50%, -50%) translateY(var(--by, -108px)) scale(var(--bs, 1));
+}
+.lever-ball:active { cursor: grabbing; }
+.lever-ball:focus-visible { outline: 3px solid var(--win); outline-offset: 3px; }
+/* подсказка «дёрни меня» в простое */
+.lever.is-hint .lever-ball::after {
+  content: "";
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 210, 90, .8);
+  animation: ping 1.8s ease-out infinite;
+}
+@keyframes ping {
+  0%   { transform: scale(.85); opacity: .9; }
+  80%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ───────── табличка статуса ───────── */
+.plate {
+  margin-top: 14px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--gold-grad);
+}
+.plate-inner {
+  min-height: 52px;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-radius: 9px;
+  background: #0b0b0d;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, .9);
+  font-weight: 800;
+  font-size: 17px;
+  text-align: center;
+  color: #ffe3a8;
+}
+.machine.is-win .plate-inner { color: var(--win); text-shadow: 0 0 10px rgba(255, 210, 60, .6); }
+.machine.is-lose .plate-inner { color: #ff8a8a; }
+
+/* ───────── монеты ───────── */
+.fx { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 5; }
+.coin {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: 26px; height: 26px;
+  margin: -13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff6c8 0%, #ffd24a 40%, #c98a10 80%);
+  box-shadow: inset 0 0 0 3px rgba(150, 90, 0, .55), 0 3px 6px rgba(0, 0, 0, .5);
+  animation: coin 1.4s cubic-bezier(.2, .6, .4, 1) forwards;
+  animation-delay: var(--d);
+  opacity: 0;
+}
+@keyframes coin {
+  0%   { opacity: 1; transform: translate(0, 0) rotateY(0) scale(.6); }
+  35%  { opacity: 1; transform: translate(calc(var(--dx) * .55), var(--dy)) rotateY(360deg) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), 420px) rotateY(900deg) scale(1); }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bulbs i, .lever.is-hint .lever-ball::after { animation: none !important; }
+  .strip.is-blurred { filter: none; }
+  .machine.is-lose { animation: none; }
+}

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Концепт 4 — Майами 80-х</title>
+<link href="https://fonts.googleapis.com/css2?family=Mr+Dafoe&family=Rubik:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff5fa8; --pink-hi: #ffb3d6; --pink-pastel: #ffa3c9; --pink-deep: #d6337f;
+    --cyan: #3fe0e0; --cyan-deep: #16a3b3;
+    --navy: #1b0f3d; --night: #2a0f4f;
+    --sun-1: #ffe45c; --sun-2: #ff8a3d; --sun-3: #ff3d8b;
+    --gold: #ffcc33;
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 390px; height: 844px; margin: 0; overflow: hidden; position: relative;
+    display: grid; place-items: center;
+    font-family: "Rubik", sans-serif;
+    background: linear-gradient(180deg, #1c0b3f 0%, #4a1466 26%, #b0306f 46%, #ff6a5e 60%, #ffb35c 68%, #2b1250 68.2%, #170a33 100%);
+  }
+
+  /* солнце с полосками */
+  .sun {
+    position: absolute; left: 50%; top: 56px; width: 270px; height: 270px; margin-left: -135px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--sun-1) 0%, var(--sun-2) 45%, var(--sun-3) 100%);
+    -webkit-mask: linear-gradient(180deg, #000 52%, transparent 52% 55%, #000 55% 62%, transparent 62% 66%, #000 66% 72%, transparent 72% 77%, #000 77% 82%, transparent 82% 88%, #000 88%);
+            mask: linear-gradient(180deg, #000 52%, transparent 52% 55%, #000 55% 62%, transparent 62% 66%, #000 66% 72%, transparent 72% 77%, #000 77% 82%, transparent 82% 88%, #000 88%);
+    box-shadow: 0 0 80px rgba(255, 120, 90, .6);
+  }
+  /* океан с бликами заката */
+  .sea {
+    position: absolute; left: 0; right: 0; top: 574px; bottom: 0;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 9px, rgba(255, 140, 120, .35) 9px 11px),
+      linear-gradient(180deg, #3b1a66, #150830);
+    -webkit-mask: radial-gradient(ellipse 60% 100% at 50% 0%, #000 30%, rgba(0,0,0,.35) 70%);
+  }
+  .sea::after {
+    content: ""; position: absolute; left: 20%; right: 20%; top: 0; height: 90px;
+    background: repeating-linear-gradient(180deg, rgba(255, 200, 120, .55) 0 3px, transparent 3px 10px);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 30%, #000 70%, transparent), linear-gradient(180deg, #000, transparent);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  .palm { position: absolute; bottom: 150px; width: 190px; height: 420px; fill: #12062a; }
+  .palm.l { left: -54px; bottom: 172px; }
+  .palm.r { right: -70px; transform: scaleX(-1); bottom: 190px; height: 380px; }
+
+  .stage { position: relative; width: 352px; padding-right: 52px; z-index: 2; }
+  .machine { position: relative; width: 300px; filter: drop-shadow(0 24px 24px rgba(20, 5, 40, .55)); }
+
+  /* ступенчатая ар-деко верхушка, как отели на набережной */
+  .tier { margin: 0 auto; background: #fff4f8; border-radius: 10px 10px 0 0; box-shadow: inset 0 -4px 0 var(--pink-pastel), inset 0 3px 0 #fff; }
+  .tier.t1 { width: 70px; height: 16px; position: relative; }
+  .tier.t1::before { content: ""; position: absolute; left: 50%; top: -22px; width: 4px; height: 22px; margin-left: -2px; background: #fff; border-radius: 2px; }
+  .tier.t1::after { content: ""; position: absolute; left: 50%; top: -28px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px 3px var(--cyan); }
+  .tier.t2 { width: 150px; height: 16px; display: flex; justify-content: center; gap: 12px; align-items: flex-end; }
+  .tier.t2 i { width: 6px; height: 10px; background: var(--cyan); border-radius: 3px 3px 0 0; }
+  .tier.t3 { width: 230px; height: 14px; }
+
+  .sign {
+    position: relative; padding: 18px 12px 16px; text-align: center;
+    border-radius: 18px 18px 8px 8px;
+    background: radial-gradient(ellipse at 50% 80%, #3a1466, var(--navy) 70%);
+    border: 4px solid #fff4f8;
+    box-shadow: inset 0 0 0 3px #ffd6ea, inset 0 0 14px var(--pink), 0 0 20px rgba(255, 95, 168, .6);
+  }
+  .kicker {
+    font-weight: 900; font-size: 18px; letter-spacing: .12em; padding-left: .12em;
+    color: #fff;
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 2px 2px #000, -2px 2px #000, 2px -2px #000, -2px -2px #000, 3px 4px 0 #000;
+  }
+  .title {
+    margin: -4px 0 0; font-family: "Mr Dafoe", cursive; font-weight: 400;
+    font-size: 66px; line-height: 1; transform: rotate(-6deg);
+    color: #ffe3f1;
+    text-shadow: 0 0 3px #fff, 0 0 10px var(--pink), 0 0 24px var(--pink), 0 0 44px var(--pink-deep), 3px 4px 0 rgba(0,0,0,.25);
+  }
+
+  .body {
+    position: relative; margin-top: -2px; padding: 18px 16px 16px;
+    background: linear-gradient(90deg, #f07fb2 0%, var(--pink-pastel) 18%, var(--pink-hi) 45%, var(--pink-pastel) 78%, #e46ea4 100%);
+    box-shadow: inset 0 0 0 4px #fff4f8, 10px 0 0 #c84d88;
+  }
+  /* «майамские» полосы по бокам */
+  .stripes { position: absolute; top: 40px; bottom: 40px; width: 6px; display: flex; gap: 3px; }
+  .stripes.l { left: 5px; } .stripes.r { right: 5px; }
+  .stripes i { flex: 0 0 3px; }
+  .stripes i:nth-child(1) { background: var(--cyan); } .stripes i:nth-child(2) { background: #fff; }
+
+  .bezel {
+    padding: 8px; border-radius: 16px;
+    background: linear-gradient(180deg, #fff 0%, #c9d6e0 45%, #f3f7fa 55%, #9aa8b4 100%);
+    box-shadow: 0 5px 0 #b44a7e, 0 10px 14px rgba(60, 10, 50, .35);
+  }
+  .window {
+    position: relative; height: 180px; overflow: hidden; border-radius: 10px;
+    background: linear-gradient(180deg, #8f6fa0 0%, #f2e6f2 18%, #fffaf6 50%, #f2e6f2 82%, #8f6fa0 100%);
+    box-shadow: inset 0 0 0 2px var(--navy);
+  }
+  .window::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(40, 10, 60, .6) 0%, transparent 28%, transparent 72%, rgba(40, 10, 60, .6) 100%),
+      linear-gradient(118deg, transparent 58%, rgba(255,255,255,.5) 58% 63%, transparent 63% 67%, rgba(255,255,255,.3) 67% 69%, transparent 69%);
+    box-shadow: inset 0 14px 12px -8px rgba(0,0,0,.45);
+  }
+  .strip { position: absolute; left: 0; right: 0; top: -45px; }
+  .row { height: 90px; display: grid; place-items: center; font-weight: 900; font-style: italic; text-transform: uppercase; white-space: nowrap; letter-spacing: -.01em; }
+  .row.yes { font-size: 31px; color: var(--pink); text-shadow: 3px 3px 0 var(--cyan-deep), 5px 5px 0 var(--navy); }
+  .row.no  { font-size: 25px; color: var(--cyan-deep); text-shadow: 2px 2px 0 var(--navy); }
+  .payline { position: absolute; top: 50%; width: 0; height: 0; margin-top: -9px; border: 9px solid transparent; z-index: 2; }
+  .payline.l { left: 0; border-left: 12px solid var(--cyan-deep); }
+  .payline.r { right: 0; border-right: 12px solid var(--cyan-deep); }
+
+  .lower {
+    position: relative; margin: -2px -8px 0; padding: 16px 18px 18px;
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(90deg, #13a0ad 0%, var(--cyan) 30%, #7af0ee 48%, var(--cyan) 72%, #0f8f9c 100%);
+    box-shadow: inset 0 0 0 4px #fff4f8, 10px 0 0 #0d7480;
+  }
+  /* надпись в духе «миссия выполнена» */
+  .plate {
+    display: grid; place-items: center; min-height: 64px; padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #2a1458, var(--navy));
+    box-shadow: inset 0 0 0 2px #fff4f8, inset 0 6px 12px rgba(0,0,0,.5);
+  }
+  .plate span {
+    font-weight: 900; font-size: 25px; letter-spacing: .01em; text-transform: uppercase; font-style: italic;
+    color: var(--gold);
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 2px 2px #000, -2px 2px #000, 2px -2px #000, -2px -2px #000, 3px 4px 0 #000;
+  }
+  .base {
+    height: 24px; margin: 0 -14px; border-radius: 6px;
+    background: linear-gradient(180deg, #fff 0 4px, #fff4f8 4px 12px, var(--pink) 12px 16px, #fff4f8 16px);
+    box-shadow: 10px 0 0 #d9c7d2, 0 0 24px rgba(255, 95, 168, .6);
+  }
+
+  .lever { position: absolute; left: calc(100% + 8px); top: 50%; width: 52px; height: 0; }
+  .lever .mount { position: absolute; left: -2px; top: -38px; width: 20px; height: 76px; border-radius: 0 10px 10px 0; background: linear-gradient(90deg, #9aa8b4, #fff 45%, #c9d6e0 70%, #7b8894); }
+  .lever .rod { position: absolute; left: 20px; bottom: 0; width: 8px; height: 106px; border-radius: 4px; background: linear-gradient(90deg, #8a97a3, #fff 40%, #b8c5d0 70%, #6a7784); }
+  .lever .hub { position: absolute; left: 8px; top: -16px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, var(--cyan) 50%, var(--cyan-deep)); }
+  .lever .ball { position: absolute; left: 24px; top: -106px; width: 46px; height: 46px; margin: -23px; border-radius: 50%; background: radial-gradient(circle at 34% 28%, #fff 0%, var(--pink-hi) 18%, var(--pink) 50%, #a3165a 100%); box-shadow: 0 0 16px rgba(255, 95, 168, .8), 0 6px 10px rgba(0,0,0,.35); }
+</style>
+</head>
+<body>
+  <div class="sun"></div>
+  <div class="sea"></div>
+
+  <svg class="palm l" viewBox="0 0 190 420" aria-hidden="true">
+    <path d="M92 420 C88 330 92 230 112 120 L122 122 C104 232 102 330 106 420 Z"/>
+    <g transform="translate(116 118)">
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(-8)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(28)"/>
+      <path d="M0 0 C30 -26 80 -30 110 4 C80 -8 36 -6 0 0Z" transform="rotate(62)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(200) scale(1 -1)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(160) scale(1 -1)"/>
+      <path d="M0 0 C30 -26 80 -30 104 4 C80 -8 36 -6 0 0Z" transform="rotate(236) scale(1 -1)"/>
+      <path d="M0 0 C24 -20 60 -24 90 0 C60 -6 30 -4 0 0Z" transform="rotate(-70)"/>
+      <path d="M0 0 C24 -20 60 -24 90 0 C60 -6 30 -4 0 0Z" transform="rotate(-112) scale(1 -1)"/>
+    </g>
+  </svg>
+  <svg class="palm r" viewBox="0 0 190 420" aria-hidden="true">
+    <path d="M92 420 C88 330 92 230 112 120 L122 122 C104 232 102 330 106 420 Z"/>
+    <g transform="translate(116 118)">
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(-8)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(28)"/>
+      <path d="M0 0 C30 -26 80 -30 110 4 C80 -8 36 -6 0 0Z" transform="rotate(62)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(200) scale(1 -1)"/>
+      <path d="M0 0 C30 -26 80 -30 118 4 C80 -8 36 -6 0 0Z" transform="rotate(160) scale(1 -1)"/>
+      <path d="M0 0 C24 -20 60 -24 90 0 C60 -6 30 -4 0 0Z" transform="rotate(-70)"/>
+      <path d="M0 0 C24 -20 60 -24 90 0 C60 -6 30 -4 0 0Z" transform="rotate(-112) scale(1 -1)"/>
+    </g>
+  </svg>
+
+  <div class="stage">
+    <div class="machine">
+      <div class="tier t1"></div>
+      <div class="tier t2"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="tier t3"></div>
+
+      <header class="sign">
+        <div class="kicker">СТАТУС</div>
+        <h1 class="title">AppStore</h1>
+      </header>
+
+      <section class="body">
+        <div class="stripes l"><i></i><i></i></div><div class="stripes r"><i></i><i></i></div>
+        <div class="bezel">
+          <div class="window">
+            <span class="payline l"></span><span class="payline r"></span>
+            <div class="strip">
+              <div class="row no">Не отпустило</div>
+              <div class="row yes">Отпустило</div>
+              <div class="row no">Не отпустило</div>
+            </div>
+          </div>
+        </div>
+        <div class="lever"><div class="mount"></div><div class="rod"></div><div class="hub"></div><div class="ball"></div></div>
+      </section>
+
+      <div class="lower"><div class="plate"><span>Грузим прилы!</span></div></div>
+      <div class="base"></div>
+    </div>
+  </div>
+</body>
+</html>

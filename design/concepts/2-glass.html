@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Концепт 2 — Liquid Glass</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    width: 390px; height: 844px; margin: 0; overflow: hidden;
+    display: grid; place-items: center;
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    color: #fff;
+    background: #2140b8;
+  }
+  /* обои в духе iOS: мягкие цветные пятна */
+  .wall { position: fixed; inset: -20%; filter: blur(50px); }
+  .wall i { position: absolute; border-radius: 50%; }
+
+  .stage { position: relative; width: 352px; padding-right: 52px; }
+
+  .glass {
+    background: linear-gradient(160deg, rgba(255,255,255,.42), rgba(255,255,255,.12) 55%, rgba(255,255,255,.2));
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+            backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow:
+      inset 0 1.5px 1px rgba(255,255,255,.95),
+      inset 0 -1px 1px rgba(255,255,255,.35),
+      inset 0 0 24px rgba(255,255,255,.12),
+      0 24px 60px rgba(20, 16, 80, .35);
+  }
+
+  .card {
+    position: relative;
+    width: 300px;
+    padding: 30px 18px 18px;
+    border-radius: 46px;
+  }
+  .kicker { font-size: 15px; font-weight: 600; letter-spacing: .02em; color: rgba(255,255,255,.78); text-align: center; }
+  .title {
+    margin: 2px 0 22px; text-align: center;
+    font-size: 46px; font-weight: 800; letter-spacing: -.03em; line-height: 1.05;
+    background: linear-gradient(180deg, #fff 30%, #d7e6ff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 2px 6px rgba(20, 30, 120, .3));
+  }
+
+  /* барабан как колесо UIPickerView */
+  .picker {
+    position: relative; height: 200px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.82);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,1), inset 0 -8px 20px rgba(60,70,140,.12), 0 8px 20px rgba(30,30,90,.18);
+    overflow: hidden;
+    perspective: 400px;
+  }
+  .picker::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 68%, rgba(255,255,255,.95) 100%);
+  }
+  .band {
+    position: absolute; left: 10px; right: 10px; top: 50%; height: 64px; margin-top: -32px;
+    border-radius: 18px;
+    background: rgba(120, 130, 170, .14);
+  }
+  .row {
+    position: absolute; left: 0; right: 0; height: 64px;
+    display: grid; place-items: center;
+    font-weight: 800; letter-spacing: -.02em; white-space: nowrap;
+  }
+  .row.center { top: 68px; font-size: 30px; color: #1fae4b; }
+  .row.up   { top: 6px;   font-size: 22px; color: #e0463c; transform: rotateX(32deg) scale(.92); transform-origin: 50% 100%; opacity: .7; }
+  .row.down { top: 130px; font-size: 22px; color: #e0463c; transform: rotateX(-32deg) scale(.92); transform-origin: 50% 0%; opacity: .7; }
+
+  .toast {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin-top: 14px; height: 56px;
+    border-radius: 28px;
+    font-size: 18px; font-weight: 700; letter-spacing: -.01em;
+  }
+  .toast .dot { width: 10px; height: 10px; border-radius: 50%; background: #34c759; box-shadow: 0 0 0 4px rgba(52,199,89,.25); }
+
+  /* ручка — вертикальный стеклянный слайдер с жидкой «каплей» */
+  .lever { position: absolute; right: 0; top: 150px; width: 40px; height: 210px; border-radius: 20px; }
+  .lever .track { position: absolute; left: 50%; top: 30px; bottom: 30px; width: 6px; margin-left: -3px; border-radius: 3px; background: rgba(255,255,255,.45); }
+  .lever .knob {
+    position: absolute; left: 50%; top: 0; width: 52px; height: 52px; margin-left: -26px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 26%, rgba(255,255,255,.98) 0 12%, rgba(255,255,255,0) 30%),
+      radial-gradient(circle at 60% 75%, rgba(255,120,110,.6), transparent 60%),
+      linear-gradient(160deg, #ff6b5e, #e5261b);
+    border: 1px solid rgba(255,255,255,.7);
+    box-shadow: inset 0 -4px 8px rgba(120,0,0,.35), inset 0 2px 2px rgba(255,255,255,.8), 0 10px 20px rgba(160,20,20,.35);
+  }
+  .lever .chev { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; font-size: 13px; font-weight: 700; color: rgba(255,255,255,.8); line-height: .8; }
+</style>
+</head>
+<body>
+  <div class="wall">
+    <i style="width:420px;height:420px;left:-60px;top:40px;background:#5ac8fa"></i>
+    <i style="width:380px;height:380px;right:-40px;top:160px;background:#bf5af2"></i>
+    <i style="width:420px;height:420px;left:40px;bottom:0;background:#ff9f0a"></i>
+    <i style="width:300px;height:300px;right:40px;bottom:140px;background:#ff375f"></i>
+  </div>
+
+  <div class="stage">
+    <div class="card glass">
+      <div class="kicker">Статус</div>
+      <h1 class="title">AppStore</h1>
+
+      <div class="picker">
+        <div class="band"></div>
+        <div class="row up">Не отпустило</div>
+        <div class="row center">Отпустило</div>
+        <div class="row down">Не отпустило</div>
+      </div>
+
+      <div class="toast glass"><span class="dot"></span>Грузим прилы!</div>
+    </div>
+
+    <div class="lever glass">
+      <div class="track"></div>
+      <div class="knob"></div>
+      <div class="chev">⌄<br>⌄</div>
+    </div>
+  </div>
+</body>
+</html>
